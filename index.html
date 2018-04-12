@@ -14,27 +14,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.29/browser.js">
     </script>
     <script type="text/babel">
-// JSX code here. Or link to separate JavaScript file that contains JSX.
-        const IngredientsList = React.createClass({
-            displayName: "IngredientsList",
-            render() {
-                return React.createElement("ul", { "className": "ingredients" },
-                    React.createElement("li", null, "1 lb Salmon"),
-                    React.createElement("li", null, "1 cup Pine Nuts"),
-                    React.createElement("li", null, "2 cups Butter Lettuce"),
-                    React.createElement("li", null, "1 Yellow Squash"),
-                    React.createElement("li", null, "1/2 cup Olive Oil"),
-                    React.createElement("li", null, "3 cloves of Garlic")
-                )
-            }
-        });
+    // The data, an array of Recipe objects
+    var data = [
+        {
+            "name": "Baked Salmon",
+            "ingredients": [
+                { "name": "Salmon", "amount": 1, "measurement": "l lb" },
+                { "name": "Pine Nuts", "amount": 1, "measurement": "cup" },
+                { "name": "Butter Lettuce", "amount": 2, "measurement": "cups" },
+                { "name": "Yellow Squash", "amount": 1, "measurement": "med" },
+                { "name": "Olive Oil", "amount": 0.5, "measurement": "cup" },
+                { "name": "Garlic", "amount": 3, "measurement": "cloves" }
+            ],
+            "steps": [
+                "Preheat the oven to 350 degrees.",
+                "Spread the olive oil around a glass baking dish.",
+                "Add the salmon, garlic, and pine nuts to the dish.",
+                "Bake for 15 minutes.",
+                "Add the yellow squash and put back in the oven for 30 mins.",
+                "Remove from oven and let cool for 15 minutes. Add the lettuce and serve."
+            ]
+        },
+        {
+            "name": "Fish Tacos",
+            "ingredients": [
+                { "name": "Whitefish", "amount": 1, "measurement": "l lb" },
+                { "name": "Cheese", "amount": 1, "measurement": "cup" },
+                { "name": "Iceberg Lettuce", "amount": 2, "measurement": "cups" },
+                { "name": "Tomatoes", "amount": 2, "measurement": "large"},
+                { "name": "Tortillas", "amount": 3, "measurement": "med" }
+            ],
+            "steps": [
+                "Cook the fish on the grill until hot.",
+                "Place the fish on the 3 tortillas.",
+                "Top them with lettuce, tomatoes, and cheese."
+            ]
+        }
+    ];
 
-        const list = React.createElement(IngredientsList, null, null);
+    // A stateless functional component for an individual Recipe
+    const Recipe = ({ name, ingredients, steps }) =>
+        <section id={name.toLowerCase().replace(/ /g, "-")}>
+            <h1>{name}</h1>
+            <ul className="ingredients">
+                {ingredients.map((ingredient, i) =>
+                    <li key={i}>{ingredient.name}</li>
+                )}
+            </ul>
+            <section className="instructions">
+            <h2>Cooking Instructions</h2>
+            {steps.map((step, i) =>
+                <p key={i}>{step}</p>
+            )}
+            </section>
+        </section>
 
-        ReactDOM.render(
-            list,
-            document.getElementById('react-container')
-        );
+    // A stateless functional component for the Menu of Recipes
+    const Menu = ({ title, recipes }) =>
+        <article>
+            <header>
+                <h1>{title}</h1>
+            </header>
+            <div className="recipes">
+                {recipes.map((recipe, i) =>
+                    <Recipe key={i} {...recipe} />
+                )}
+            </div>
+        </article>
+
+    // A call to ReactDOM.render to render our Menu into the current DOM
+    ReactDOM.render(
+        <Menu recipes={data} title="Delicious Recipes" />,
+        document.getElementById("react-container")
+    )
     </script>
 </body>
 
